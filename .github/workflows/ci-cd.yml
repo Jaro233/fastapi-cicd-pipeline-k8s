@@ -163,7 +163,7 @@ jobs:
 
       - name: Set up Kubeconfig
         run: |
-          aws eks update-kubeconfig --name ${{secrets.CLUSTER_NAME}}
+          aws eks update-kubeconfig --name ${{secrets.CLUSTER_NAME}} --role-arn ${{ secrets.ROLE_ARN }}
 
       - name: Upgrade Application with Helm
         run: |
