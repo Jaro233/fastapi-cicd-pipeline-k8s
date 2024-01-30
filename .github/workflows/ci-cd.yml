@@ -97,7 +97,7 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          tags: j4ro123/fastapi-app:latest
+          tags: j4ro123/fastapi-app:0.${{ github.run_number }}
           secrets: |
             "host=${{ secrets.HOST }}"
             "database=${{ secrets.DATABASE }}"
@@ -122,7 +122,27 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
       - name: Push Docker image to Docker Hub
-        run: docker push j4ro123/fastapi-app:latest
+        run: docker push j4ro123/fastapi-app:0.${{ github.run_number }}
+
+      - name: Install Helm
+        run: |
+          curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+          chmod 700 get_helm.sh
+          ./get_helm.sh
+
+      - name: Set up Kubeconfig
+        run: |
+          echo "${{ secrets.KUBECONFIG }}" | base64 -d > kubeconfig
+          export KUBECONFIG=$(pwd)/kubeconfig
+
+      - name: Upgrade Application with Helm
+        run: |
+          helm upgrade helm-fastapi ./helm-fastapi \
+            --namespace default \
+            --reuse-values \
+            --set image.repository=j4ro123/fastapi-app \
+            --set image.tag=0.${{ github.run_number }} \
+            --install
 
       - name: Removing previous chrome instances on runner
         run: sudo apt purge google-chrome-stable

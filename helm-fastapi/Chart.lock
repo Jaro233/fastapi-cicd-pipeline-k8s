@@ -1,0 +1,12 @@
+dependencies:
+- name: postgresql
+  repository: https://charts.bitnami.com/bitnami
+  version: 13.4.1
+- name: cert-manager
+  repository: https://charts.jetstack.io
+  version: v1.13.3
+- name: ingress-nginx
+  repository: https://kubernetes.github.io/ingress-nginx
+  version: 4.9.1
+digest: sha256:b03b0ec8c63bdd2f3bba99d3df43e6710202720cb972593737bcfd462c6be84c
+generated: "2024-01-28T13:00:04.156297+01:00"
