@@ -1,0 +1,13 @@
+pytest 
+selenium 
+flake8 
+black 
+poetry 
+isort
+fastapi
+httpx
+psycopg2_binary
+python-dotenv
+chromedriver_autoinstaller
+httpcore
+pyvirtualdisplay

@@ -1,0 +1,9 @@
+chromedriver_autoinstaller
+fastapi
+httpcore
+psycopg2_binary
+pydantic
+python-dotenv
+PyVirtualDisplay
+starlette
+uvicorn

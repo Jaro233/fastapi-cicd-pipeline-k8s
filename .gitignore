@@ -1,0 +1,6 @@
+.env
+__pycache__
+.pytest*
+chrome*
+dist
+env*
