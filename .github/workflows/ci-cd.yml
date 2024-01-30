@@ -80,11 +80,8 @@ jobs:
           wget https://github.com/jeremylong/DependencyCheck/releases/download/v9.0.9/dependency-check-9.0.9-release.zip
           unzip dependency-check-9.0.9-release.zip
 
-          # Set NVD API Key
-          export NVD_API_KEY=${{ secrets.NVD_API_KEY }}
-
           # Run Dependency-Check
-          ./dependency-check/bin/dependency-check.sh --project "Fastapi-project" --scan "./fast_api_app"
+          ./dependency-check/bin/dependency-check.sh --project "Fastapi-project" --scan "./fast_api_app" --nvdApiKey "${{ secrets.NVD_API_KEY }}"
 
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
