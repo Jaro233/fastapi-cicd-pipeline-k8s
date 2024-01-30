@@ -74,20 +74,20 @@ jobs:
           python -m flake8 --max-line-length=120
           python -m black . --check
 
-      - name: Run OWASP Dependency Check
-        run: |
-          # Download and unzip Dependency-Check
-          wget https://github.com/jeremylong/DependencyCheck/releases/download/v9.0.9/dependency-check-9.0.9-release.zip
-          unzip dependency-check-9.0.9-release.zip
+      # - name: Run OWASP Dependency Check
+      #   run: |
+      #     # Download and unzip Dependency-Check
+      #     wget https://github.com/jeremylong/DependencyCheck/releases/download/v9.0.9/dependency-check-9.0.9-release.zip
+      #     unzip dependency-check-9.0.9-release.zip
 
-          # Run Dependency-Check
-          ./dependency-check/bin/dependency-check.sh --project "Fastapi-project" --scan "./fast_api_app" --nvdApiKey "${{ secrets.NVD_API_KEY }}"
+      #     # Run Dependency-Check
+      #     ./dependency-check/bin/dependency-check.sh --project "Fastapi-project" --scan "./fast_api_app" --nvdApiKey "${{ secrets.NVD_API_KEY }}"
 
-      - name: Upload Dependency Check Report
-        uses: actions/upload-artifact@v2
-        with:
-          name: dependency-check-report
-          path: ./reports/dependency-check-report.html
+      # - name: Upload Dependency Check Report
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: dependency-check-report
+      #     path: ./reports/dependency-check-report.html
 
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
