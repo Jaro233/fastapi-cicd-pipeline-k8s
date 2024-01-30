@@ -83,6 +83,12 @@ jobs:
           # Run Dependency-Check
           ./dependency-check/bin/dependency-check.sh --project "Fastapi-project" --scan "./fast_api_app" --nvdApiKey "${{ secrets.NVD_API_KEY }}"
 
+      - name: Upload Dependency Check Report
+        uses: actions/upload-artifact@v2
+        with:
+          name: dependency-check-report
+          path: ./reports/dependency-check-report.html
+
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
         with:
@@ -142,7 +148,7 @@ jobs:
 
       - name: Set up Kubeconfig
         run: |
-          aws eks update-kubeconfig --name ${{CLUSTER_NAME}}
+          aws eks update-kubeconfig --name ${{secrets.CLUSTER_NAME}}
 
       - name: Upgrade Application with Helm
         run: |
