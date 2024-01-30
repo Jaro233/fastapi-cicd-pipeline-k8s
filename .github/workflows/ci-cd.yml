@@ -128,6 +128,12 @@ jobs:
       - name: Push Docker image to Docker Hub
         run: docker push j4ro123/fastapi-app:0.${{ github.run_number }}
 
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{secrets.ROLE_ARN}}
+          aws-region: us-east-1
+
       - name: Install Helm
         run: |
           curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
@@ -136,8 +142,7 @@ jobs:
 
       - name: Set up Kubeconfig
         run: |
-          echo "${{ secrets.KUBECONFIG }}" > kubeconfig
-          export KUBECONFIG=$(pwd)/kubeconfig
+          aws eks update-kubeconfig --name ${{CLUSTER_NAME}}
 
       - name: Upgrade Application with Helm
         run: |
