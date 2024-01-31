@@ -166,10 +166,6 @@ jobs:
         run: |
           aws eks update-kubeconfig --name ${{secrets.CLUSTER_NAME}}
 
-      - name: Update deps with Helm
-        run: |
-          helm dependency update ./helm-fastapi
-
       - name: Upgrade Application with Helm
         run: |
           helm upgrade helm-fastapi ./helm-fastapi \
