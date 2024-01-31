@@ -168,10 +168,13 @@ jobs:
 
       - name: Upgrade Application with Helm
         run: |
+          helm dependency update ./helm-fastapi
+
+      - name: Upgrade Application with Helm
+        run: |
           helm upgrade helm-fastapi ./helm-fastapi \
             --set image.repository=j4ro123/fastapi-app \
             --set image.tag=0.${{ github.run_number }} \
-            --skip-deps
 
       - name: Removing previous chrome instances on runner
         run: sudo apt purge google-chrome-stable

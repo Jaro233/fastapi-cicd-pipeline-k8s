@@ -5,3 +5,4 @@ chrome*
 dist
 env*
 Chart.lock
+charts
