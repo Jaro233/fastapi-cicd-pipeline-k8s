@@ -171,6 +171,9 @@ jobs:
           helm upgrade helm-fastapi ./helm-fastapi \
             --set image.repository=j4ro123/fastapi-app \
             --set image.tag=0.${{ github.run_number }} \
+            --set db.database=${{ secrets.DATABASE }} \
+            --set db.password=${{ secrets.PASSWORD }} \
+            --set certManager.email=${{ secrets.EMAIL }} \
 
       - name: Removing previous chrome instances on runner
         run: sudo apt purge google-chrome-stable
