@@ -166,7 +166,7 @@ jobs:
         run: |
           aws eks update-kubeconfig --name ${{secrets.CLUSTER_NAME}}
 
-      - name: Upgrade Application with Helm
+      - name: Update deps with Helm
         run: |
           helm dependency update ./helm-fastapi
 
