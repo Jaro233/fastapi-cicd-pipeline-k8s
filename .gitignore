@@ -4,3 +4,4 @@ __pycache__
 chrome*
 dist
 env*
+Chart.lock

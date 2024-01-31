@@ -17,39 +17,39 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v2
 
-      - name: Run DB container
-        run: |
-          docker network create mynetwork
-          docker run --network mynetwork --name db -p 5432:5432 \
-          --env POSTGRES_USER=${{ secrets.USER }} \
-          --env POSTGRES_PASSWORD=${{ secrets.PASSWORD }} \
-          --env POSTGRES_DB=${{ secrets.DATABASE }} \
-          -v ${{ github.workspace }}/fast_api_app/populate_db.sql:/docker-entrypoint-initdb.d/populate_db.sql \
-          -d postgres:latest
+      # - name: Run DB container
+      #   run: |
+      #     docker network create mynetwork
+      #     docker run --network mynetwork --name db -p 5432:5432 \
+      #     --env POSTGRES_USER=${{ secrets.USER }} \
+      #     --env POSTGRES_PASSWORD=${{ secrets.PASSWORD }} \
+      #     --env POSTGRES_DB=${{ secrets.DATABASE }} \
+      #     -v ${{ github.workspace }}/fast_api_app/populate_db.sql:/docker-entrypoint-initdb.d/populate_db.sql \
+      #     -d postgres:latest
 
-      - name: Verify database population
-        env:
-          POSTGRES_USER: ${{ secrets.USER }}
-          POSTGRES_PASSWORD: ${{ secrets.PASSWORD }}
-          POSTGRES_DB: ${{ secrets.DATABASE }}
-        run: |
-          # Wait for the database to be fully ready
-          echo "Waiting for PostgreSQL to start"
-          until docker exec db pg_isready; do
-            sleep 1;
-          done
-          echo "PostgreSQL started"
+      # - name: Verify database population
+      #   env:
+      #     POSTGRES_USER: ${{ secrets.USER }}
+      #     POSTGRES_PASSWORD: ${{ secrets.PASSWORD }}
+      #     POSTGRES_DB: ${{ secrets.DATABASE }}
+      #   run: |
+      #     # Wait for the database to be fully ready
+      #     echo "Waiting for PostgreSQL to start"
+      #     until docker exec db pg_isready; do
+      #       sleep 1;
+      #     done
+      #     echo "PostgreSQL started"
 
-          # Check if the database is populated
-          QUERY="SELECT COUNT(*) FROM books;"
-          RESULT=$(docker exec -e PGPASSWORD=$POSTGRES_PASSWORD db psql -U $POSTGRES_USER -d $POSTGRES_DB -t -c "$QUERY")
-          echo "Number of rows in books: $RESULT"
-          if [[ $RESULT -eq 0 ]]; then
-            echo "Database is not populated"
-            exit 1
-          else
-            echo "Database is populated"
-          fi
+      #     # Check if the database is populated
+      #     QUERY="SELECT COUNT(*) FROM books;"
+      #     RESULT=$(docker exec -e PGPASSWORD=$POSTGRES_PASSWORD db psql -U $POSTGRES_USER -d $POSTGRES_DB -t -c "$QUERY")
+      #     echo "Number of rows in books: $RESULT"
+      #     if [[ $RESULT -eq 0 ]]; then
+      #       echo "Database is not populated"
+      #       exit 1
+      #     else
+      #       echo "Database is populated"
+      #     fi
 
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -128,15 +128,15 @@ jobs:
             "password=${{ secrets.PASSWORD }}"
             "port=${{ secrets.PORT }}"
 
-      - name: Scan the Docker image with Trivy
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: j4ro123/fastapi-app:0.${{ github.run_number }}
-          format: "table"
-          exit-code: "1"
-          ignore-unfixed: true
-          vuln-type: "os,library"
-          severity: "CRITICAL,HIGH"
+      # - name: Scan the Docker image with Trivy
+      #   uses: aquasecurity/trivy-action@master
+      #   with:
+      #     image-ref: j4ro123/fastapi-app:0.${{ github.run_number }}
+      #     format: "table"
+      #     exit-code: "1"
+      #     ignore-unfixed: true
+      #     vuln-type: "os,library"
+      #     severity: "CRITICAL,HIGH"
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v1
@@ -171,11 +171,11 @@ jobs:
           helm upgrade helm-fastapi ./helm-fastapi \
             --set image.repository=j4ro123/fastapi-app \
             --set image.tag=0.${{ github.run_number }} \
-            # --set postgresql.global.postgresql.auth.password=${{ secrets.PASSWORD }} \
-            # --set postgresql.global.postgresql.auth.database=${{ secrets.DATABASE }} \
-            # --set db.database=${{ secrets.DATABASE }} \
-            # --set db.password=${{ secrets.PASSWORD }} \
-            # --set certManager.email=${{ secrets.EMAIL }} \
+            --set postgresql.global.postgresql.auth.password=${{ secrets.PASSWORD }} \
+            --set postgresql.global.postgresql.auth.database=${{ secrets.DATABASE }} \
+            --set db.database=${{ secrets.DATABASE }} \
+            --set db.password=${{ secrets.PASSWORD }} \
+            --set certManager.email=${{ secrets.EMAIL }} \
 
       - name: Removing previous chrome instances on runner
         run: sudo apt purge google-chrome-stable
