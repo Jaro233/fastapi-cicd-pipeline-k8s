@@ -169,7 +169,7 @@ jobs:
       - name: Upgrade Application with Helm
         run: |
           helm upgrade helm-fastapi ./helm-fastapi \
-            --reuse-values
+            --reuse-values \
             --set image.tag=0.${{ github.run_number }} \
 
       - name: Removing previous chrome instances on runner
