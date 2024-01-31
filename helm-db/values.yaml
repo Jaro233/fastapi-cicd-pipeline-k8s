@@ -1,0 +1,14 @@
+postgresql:
+  global:
+    postgresql:
+      auth:
+        username: admin
+        password: password # change
+        database: db # change
+  primary:
+    persistence:
+      size: 500Mi
+      mountPath: /var/lib/postgresql/data
+    # Configure size, access modes, etc.
+    initdb:
+      scriptsConfigMap: db-init-script

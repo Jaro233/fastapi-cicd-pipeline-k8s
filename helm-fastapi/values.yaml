@@ -1,31 +1,16 @@
-postgresql:
-  global:
-    postgresql:
-      auth:
-        username: admin
-        password: password
-        database: db
-  primary:
-    persistence:
-      size: 500Mi
-      mountPath: /var/lib/postgresql/data
-    # Configure size, access modes, etc.
-    initdb:
-      scriptsConfigMap: db-init-script
-
 image:
   repository: j4ro123/fastapi-app
-  tag: latest
+  tag: latest # change
 
 db:
-  host: helm-fastapi-postgresql.default.svc.cluster.local
-  database: db
+  host: helm-db-postgresql.default.svc.cluster.local
+  database: db # change
   user: admin
-  password: password
+  password: password # change
   port: "5432"
 
 certManager:
-  email: email
+  email: email # change
   ingressClass: nginx # or the class of your Ingress controller
 
 app:
