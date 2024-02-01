@@ -41,6 +41,11 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v2
 
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.12"
+
       - name: Cache pip dependencies
         uses: actions/cache@v2
         with:
@@ -98,6 +103,11 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v2
 
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.12"
+
       - name: Cache pip dependencies
         uses: actions/cache@v2
         with:
@@ -142,12 +152,17 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-  build:
+  build_and_push:
     runs-on: ubuntu-latest
     needs: code_quality_and_security_scanning
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.12"
 
       - name: Cache pip dependencies
         uses: actions/cache@v2
@@ -178,12 +193,26 @@ jobs:
             "password=${{ secrets.PASSWORD }}"
             "port=${{ secrets.PORT }}"
 
-  docker_image_scanning_and_publishing:
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+      - name: Push Docker image to Docker Hub
+        run: docker push j4ro123/fastapi-app:0.${{ github.run_number }}
+
+  docker_image_scanning:
     runs-on: ubuntu-latest
-    needs: build
+    needs: build_and_push
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.12"
 
       - name: Cache pip dependencies
         uses: actions/cache@v2
@@ -208,18 +237,9 @@ jobs:
           vuln-type: "os,library"
           severity: "CRITICAL,HIGH"
 
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-
-      - name: Push Docker image to Docker Hub
-        run: docker push j4ro123/fastapi-app:0.${{ github.run_number }}
-
   deployment:
     runs-on: ubuntu-latest
-    needs: docker_image_scanning_and_publishing
+    needs: docker_image_scanning
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
@@ -266,6 +286,11 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.12"
 
       - name: Cache pip dependencies
         uses: actions/cache@v2
