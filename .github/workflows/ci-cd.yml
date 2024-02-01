@@ -228,7 +228,7 @@ jobs:
 
   deployment:
     runs-on: ubuntu-latest
-    # needs: docker_image_scanning
+    needs: docker_image_scanning
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
