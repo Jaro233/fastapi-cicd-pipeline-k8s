@@ -41,10 +41,14 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v2
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: "3.12"
+      # Set environment variables from GitHub secrets
+      - name: Set up environment variables
+        run: |
+          echo "host=localhost" >> $GITHUB_ENV
+          echo "database=${{ secrets.DATABASE }}" >> $GITHUB_ENV
+          echo "user=${{ secrets.USER }}" >> $GITHUB_ENV
+          echo "password=${{ secrets.PASSWORD }}" >> $GITHUB_ENV
+          echo "port=${{ secrets.PORT }}" >> $GITHUB_ENV
 
       - name: Cache pip dependencies
         uses: actions/cache@v2
@@ -98,15 +102,10 @@ jobs:
 
   code_quality_and_security_scanning:
     runs-on: ubuntu-latest
-    needs: setup
+    needs: database_and_tests
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
-
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: "3.12"
 
       - name: Cache pip dependencies
         uses: actions/cache@v2
@@ -159,11 +158,6 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v2
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: "3.12"
-
       - name: Cache pip dependencies
         uses: actions/cache@v2
         with:
@@ -208,11 +202,6 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
-
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: "3.12"
 
       - name: Cache pip dependencies
         uses: actions/cache@v2
@@ -286,11 +275,6 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
-
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: "3.12"
 
       - name: Cache pip dependencies
         uses: actions/cache@v2
