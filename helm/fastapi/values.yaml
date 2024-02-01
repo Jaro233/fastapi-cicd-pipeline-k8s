@@ -3,7 +3,7 @@ image:
   tag: latest # change
 
 db:
-  host: helm-db-postgresql.default.svc.cluster.local
+  host: db-postgresql.default.svc.cluster.local
   database: db # change
   user: admin
   password: password # change
@@ -16,6 +16,3 @@ certManager:
 app:
   host: fastapi.devopshub.org
   name: fastapi-app
-
-service:
-  port: 8000 # The port your app is running on

@@ -9,7 +9,7 @@ COPY dist/ ./
 COPY static ./static
 COPY requirements.txt .
 
-# Install any needed packages specified in requirements.txt
+# Install any needed packages specified in requirements.txt and install app
 RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install --no-cache-dir *.tar.gz
 
