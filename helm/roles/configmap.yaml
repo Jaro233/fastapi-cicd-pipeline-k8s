@@ -5,5 +5,5 @@ metadata:
   namespace: kube-system
 data:
   mapRoles: |
-    - rolearn: arn:aws:iam::123456789012:role/github-role-2
+    - rolearn: arn
       username: github-role-2
