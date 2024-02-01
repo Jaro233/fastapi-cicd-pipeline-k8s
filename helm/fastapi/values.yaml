@@ -3,7 +3,7 @@ image:
   tag: latest # change
 
 db:
-  host: db-postgresql.default.svc.cluster.local
+  host: helm-db-postgresql.default.svc.cluster.local
   database: db # change
   user: admin
   password: password # change
