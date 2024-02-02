@@ -267,7 +267,7 @@ jobs:
         run: |
           helm upgrade fastapi ./helm/fastapi \
             --reuse-values \
-            --set image.tag=0.20 \
+            --set image.tag=0.${{ github.run_number }}
 
   selenium_tests:
     runs-on: ubuntu-latest
